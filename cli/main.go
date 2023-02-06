@@ -20,14 +20,22 @@ func main() {
 	app.Name = "faucet"
 	app.Description = "configurable ethereum testnet faucet"
 	app.Flags = []cli.Flag{
-		&cli.StringFlag{Name: "rpc", Usage: "url of your networks rpc endpoint", Required: true},
-		&cli.StringFlag{Name: "key", Usage: "private key of the faucets wallet", Required: true},
-		&cli.Float64Flag{Name: "amount", Usage: "amount of eth that can be claimed, value in ETH", Value: 0.01},
-		&cli.IntFlag{Name: "port", Usage: "the port number this service will be served on", Value: 8080},
-		&cli.IntFlag{Name: "delay", Usage: "amount of time in seconds a user must wait before making another claim", Value: 43200},
-		&cli.BoolFlag{Name: "captcha", Usage: "require a captcha to be solved for each claim request", Value: false},
-		&cli.IntFlag{Name: "chain", Usage: "chain id. If not provided will be fetched from the rpc provider"},
-		&cli.StringFlag{Name: "cors", Usage: "set allowed origin", Value: "*"},
+		&cli.StringFlag{Name: "rpc", Usage: "url of your networks rpc endpoint", Required: true,
+			EnvVars: []string{"FAUCET_RPC"}},
+		&cli.StringFlag{Name: "key", Usage: "private key of the faucets wallet", Required: true,
+			EnvVars: []string{"FAUCET_KEY"}},
+		&cli.Float64Flag{Name: "amount", Usage: "amount of eth that can be claimed, value in ETH", Value: 0.01,
+			EnvVars: []string{"FAUCET_AMOUNT"}},
+		&cli.IntFlag{Name: "port", Usage: "the port number this service will be served on", Value: 8080,
+			EnvVars: []string{"FAUCET_PORT"}},
+		&cli.IntFlag{Name: "delay", Usage: "amount of time in seconds a user must wait before making another claim", Value: 43200,
+			EnvVars: []string{"FAUCET_DELAY"}},
+		&cli.BoolFlag{Name: "captcha", Usage: "require a captcha to be solved for each claim request", Value: false,
+			EnvVars: []string{"FAUCET_CAPTCHA"}},
+		&cli.IntFlag{Name: "chain", Usage: "chain id. If not provided will be fetched from the rpc provider",
+			EnvVars: []string{"FAUCET_CHAIN"}},
+		&cli.StringFlag{Name: "cors", Usage: "set allowed origin", Value: "*",
+			EnvVars: []string{"FAUCET_CORS"}},
 	}
 
 	app.Action = Serve
