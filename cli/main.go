@@ -27,7 +27,7 @@ func main() {
 		&cli.Float64Flag{Name: "amount", Usage: "amount of eth that can be claimed, value in ETH", Value: 0.01,
 			EnvVars: []string{"FAUCET_AMOUNT"}},
 		&cli.IntFlag{Name: "port", Usage: "the port number this service will be served on", Value: 8080,
-			EnvVars: []string{"FAUCET_PORT"}},
+			EnvVars: []string{"PORT"}},
 		&cli.IntFlag{Name: "delay", Usage: "amount of time in seconds a user must wait before making another claim", Value: 43200,
 			EnvVars: []string{"FAUCET_DELAY"}},
 		&cli.BoolFlag{Name: "captcha", Usage: "require a captcha to be solved for each claim request", Value: false,
