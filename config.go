@@ -16,6 +16,7 @@ type Config struct {
 	Amount               *big.Int
 	AmountPerDay         *big.Int
 	ChainID              *big.Int
+	ProxyCount           int
 }
 
 func useDefaults(cfg *Config) *Config {

@@ -36,6 +36,8 @@ func main() {
 			EnvVars: []string{"FAUCET_CHAIN"}},
 		&cli.StringFlag{Name: "cors", Usage: "set allowed origin", Value: "*",
 			EnvVars: []string{"FAUCET_CORS"}},
+		&cli.IntFlag{Name: "proxy-count", Usage: "the number of proxies in front of this service", Value: 0,
+			EnvVars: []string{"FAUCET_PROXY_COUNT"}},
 	}
 
 	app.Action = Serve
@@ -51,6 +53,7 @@ func Serve(ctx *cli.Context) error {
 		Provider:   ctx.String("rpc"),
 		Amount:     faucet.ToWei(ctx.Float64("amount"), 18),
 		Delay:      time.Duration(ctx.Int("delay")) * time.Second,
+		ProxyCount: ctx.Int("proxy-count"),
 	}
 
 	if chain := ctx.Int("chain"); chain != 0 {

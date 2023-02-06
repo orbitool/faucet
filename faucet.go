@@ -73,7 +73,7 @@ func (f *Faucet) Address() string {
 func (f *Faucet) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	// 1. Get address and ip
-	ip := parseIp(r.RemoteAddr)
+	ip := getIPFromRequest(f.Config.ProxyCount, r)
 	address, err := toEthAddress(r.URL.Query().Get(f.Config.AddressQueryKey))
 	if err != nil {
 		http.Error(w, "invalid ethereum address", http.StatusBadRequest)

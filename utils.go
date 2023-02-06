@@ -6,6 +6,8 @@ import (
 	"github.com/shopspring/decimal"
 	"math/big"
 	"net"
+	"net/http"
+	"strings"
 )
 
 func toEthAddress(address string) (common.Address, error) {
@@ -15,10 +17,23 @@ func toEthAddress(address string) (common.Address, error) {
 	return common.HexToAddress(address), nil
 }
 
-func parseIp(ip string) string {
-	remoteIP, _, err := net.SplitHostPort(ip)
+// based on https://github.com/chainflag/eth-faucet/blob/main/internal/server/limiter.go
+func getIPFromRequest(proxies int, r *http.Request) string {
+	if proxies > 0 {
+		forwarded := r.Header.Get("X-Forwarded-For")
+		if forwarded != "" {
+			ips := strings.Split(forwarded, ",")
+			idx := len(ips) - proxies
+			if idx < 0 {
+				idx = 0
+			}
+			return strings.TrimSpace(ips[idx])
+		}
+	}
+
+	remoteIP, _, err := net.SplitHostPort(r.RemoteAddr)
 	if err != nil {
-		remoteIP = ip
+		remoteIP = r.RemoteAddr
 	}
 	return remoteIP
 }
