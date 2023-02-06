@@ -88,6 +88,7 @@ func Serve(ctx *cli.Context) error {
 	router.Handler("GET", "/claim", handler)
 	router.Handler("GET", "/health", serveString("healthy"))
 	router.Handler("GET", "/address", serveString(f.Address()))
+	router.Handler("GET", "/amount", serveString(faucet.ToEth(f.Config.Amount, 18).String()))
 
 	// 5. Start the http server :)
 	errChan := make(chan error)
@@ -103,6 +104,7 @@ func Serve(ctx *cli.Context) error {
 	printRoute("GET", "/address", "address of the faucets wallet")
 	printRoute("GET", "/claim?address=<address>", "Claim test eth to the provided address")
 	printRoute("GET", "/health", "returns status 200 if service is running")
+	printRoute("GET", "/amount", "returns the amount of eth given on claim")
 
 	if ctx.Bool("captcha") {
 		printRoute("GET", "/captcha/create", "Get a new captcha id")

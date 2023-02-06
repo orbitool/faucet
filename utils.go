@@ -34,7 +34,7 @@ func ToWei(v float64, decimals int) *big.Int {
 	return wei
 }
 
-func toEth(value *big.Int, decimals int) decimal.Decimal {
+func ToEth(value *big.Int, decimals int) decimal.Decimal {
 	mul := decimal.NewFromFloat(float64(10)).Pow(decimal.NewFromFloat(float64(decimals)))
 	num, _ := decimal.NewFromString(value.String())
 	result := num.Div(mul)

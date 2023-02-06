@@ -62,7 +62,7 @@ func New(cfg *Config) (*Faucet, error) {
 		signer:       types.NewEIP155Signer(cfg.ChainID),
 		eth:          client,
 		cache:        cache.New(cfg.Delay, cfg.CacheCleanupDuration),
-		displayValue: toEth(cfg.Amount, 18).String(),
+		displayValue: ToEth(cfg.Amount, 18).String(),
 	}, nil
 }
 
