@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bytes"
 	"fmt"
 	"github.com/julienschmidt/httprouter"
 	"github.com/orbitool/faucet"
@@ -137,7 +136,6 @@ func printRoute(method, name, desc string) {
 type responseWriter struct {
 	http.ResponseWriter
 	statusCode int
-	body       *bytes.Buffer
 }
 
 func (w *responseWriter) WriteHeader(code int) {
@@ -145,21 +143,11 @@ func (w *responseWriter) WriteHeader(code int) {
 	w.ResponseWriter.WriteHeader(code)
 }
 
-func (w *responseWriter) Write(b []byte) (int, error) {
-	w.body.Write(b)
-	return w.ResponseWriter.Write(b)
-}
-
 func logger(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header()
-		rw := &responseWriter{ResponseWriter: w, statusCode: 200, body: bytes.NewBuffer(nil)}
+		rw := &responseWriter{ResponseWriter: w, statusCode: 200}
 		next.ServeHTTP(rw, r)
 		log.Printf("[%d] %s %s", rw.statusCode, r.Method, r.URL)
-		// log.Printf("  - body: (%d bytes) '%s' ", len(rw.body.Bytes()), string(rw.body.Bytes()))
-
-		// headers := bytes.NewBuffer(nil)
-		// rw.Header().Write(headers)
-		// log.Printf("  - headers: (%d bytes) '%s' ", len(headers.Bytes()), string(headers.Bytes()))
 	})
 }
